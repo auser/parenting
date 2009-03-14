@@ -10,21 +10,22 @@ Being a responsible parent is hard. This lil gem makes it easy!
 
 Usage:
 
+Subclass parenting::base:
 
+class Quickie < Parenting::Base
+end
 
-== REQUIREMENTS:
-
-* FIX (list of requirements)
+Then, use to your heart's content! When you instance_eval in a block, your parent will be set with parent. This is handled with a context stack that is globally accessible. You can get the object's current context by calling current_context on an object (at runtime). 
 
 == INSTALL:
 
-* FIX (sudo gem install, anything else)
+sudo gem install auser-parenting
 
 == LICENSE:
 
 (The MIT License)
 
-Copyright (c) 2009 FIXME full name
+Copyright (c) 2009 Ari Lerner, CloudTeam, AT&T interactive
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
