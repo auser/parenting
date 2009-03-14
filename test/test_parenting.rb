@@ -30,4 +30,24 @@ class QuickieTest < Test::Unit::TestCase
       @a.my_name.should == nil
     end
   end
+  context "from within a module_eval" do
+    before(:all) do
+      @a = Quickie.new_from_string <<-EOE
+        b Quickie.new do
+          c Quickie.new do
+            my_name "bob"
+            d Quickie.new do
+              my_name "frank"
+            end
+          end
+        end
+      EOE
+    end
+    it "should set the parent's properly" do
+      @a.parent.should == nil
+      @a.b.c.parent.should == @a.b
+      # @a.b.parent.should == @a
+      # @a.b.c.parent.should == @a.b
+    end
+  end
 end

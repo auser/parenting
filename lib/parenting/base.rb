@@ -19,5 +19,28 @@ module Parenting
     def depth
       @depth ||= context_stack.size - 1
     end
+    def self.new_from_string(str="")
+      a = new
+      a.parent = nil
+      a.instance_eval("def run_child(pa);context_stack.push pa;#{str};context_stack.pop;end", str)
+      a.run_child(a)
+      context_stack.pop      
+      a
+    end
+    def method_missing(m,*a,&block)
+      if block
+        if args.empty?
+          super
+        else          
+          inst = a[0]
+          context_stack.push self
+          inst.instance_eval(&block)
+          context_stack.pop
+          h[m] = inst          
+        end
+      else
+        super
+      end
+    end
   end
 end
