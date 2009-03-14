@@ -1,0 +1,12 @@
+History.txt
+Manifest.txt
+PostInstall.txt
+README
+README.rdoc
+Rakefile
+lib/parenting.rb
+script/console
+script/destroy
+script/generate
+test/test_helper.rb
+test/test_parenting.rb
