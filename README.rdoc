@@ -1,18 +1,16 @@
 = parenting
 
-* FIX (url)
+Being a responsible parent is hard. This lil gem makes it easy!
 
 == DESCRIPTION:
 
-FIX (describe your package)
-
-== FEATURES/PROBLEMS:
-
-* FIX (list of features or problems)
+Being a responsible parent is hard. This lil gem makes it easy!
 
 == SYNOPSIS:
 
-  FIX (code sample of usage)
+Usage:
+
+
 
 == REQUIREMENTS:
 
