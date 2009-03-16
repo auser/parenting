@@ -40,7 +40,7 @@ class QuickieTest < Test::Unit::TestCase
           @c = Quickie.new do
             self.class.send :attr_reader, :d
             my_name "bob"
-            @d ||= Quickie.new do
+            $d = @d = Quickie.new do
               my_name "frank"
             end
           end
@@ -58,6 +58,17 @@ class QuickieTest < Test::Unit::TestCase
       @a.b.depth.should == 1
       @a.b.c.depth.should == 2
       @a.b.c.d.depth.should == 3
+    end
+    it "should have a current context" do
+      @a.context_stack.size.should == 0
+      @a.b.current_context.should == [@a]
+      @a.b.c.current_context.should == [@a,@a.b]
+      @a.b.c.d.current_context.should == [@a, @a.b, @a.b.c]
+    end
+    it "should no be weird" do
+      $d.should == @a.b.c.d
+      $d.parent.should == @a.b.c
+      $d.parent.parent.parent.should == @a
     end
   end
 end
