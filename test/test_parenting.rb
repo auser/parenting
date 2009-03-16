@@ -20,10 +20,10 @@ class QuickieTest < Test::Unit::TestCase
       $b.parent.should == @a
       @a.parent.should == nil
     end
-    it "should set my_name on @@c to frank" do
+    it "should set my_name on $c to frank" do
       $c.my_name.should == "frank"
     end
-    it "should set my_name on @@b to bob" do
+    it "should set my_name on $b to bob" do
       $b.my_name.should == "bob"
     end
     it "should not set my_name to is_frank on @a" do
