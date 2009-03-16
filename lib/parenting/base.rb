@@ -1,9 +1,10 @@
 module Parenting
   class Base
+    
     def context_stack
       $context_stack ||= []
     end
-    def initialize(&block)
+    def run_in_context(&block)
       @parent = parent
 
       context_stack.push self
@@ -27,7 +28,6 @@ module Parenting
           context_stack.push pa
           #{str}
           context_stack.pop
-          remove_method(:run_child)
           self
         end
       EOM

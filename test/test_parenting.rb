@@ -1,16 +1,19 @@
 require File.dirname(__FILE__) + '/test_helper.rb'
 
 class Quickie < Parenting::Base
+  attr_accessor :my_name
+  def initialize(nm="Default", &block)
+    @my_name ||= nm
+    run_in_context(&block) if block
+  end
 end
 
 class QuickieTest < Test::Unit::TestCase
   context "setting" do
     before do
       @a = Quickie.new do
-        $b = Quickie.new do
-          my_name "bob"
-          $c = Quickie.new do
-            my_name "frank"
+        $b = Quickie.new("franke") do
+          $c = Quickie.new("bob") do
           end
         end
       end
@@ -32,13 +35,13 @@ class QuickieTest < Test::Unit::TestCase
       $c.current_context.should ==[@a, $b]
     end
     it "should set my_name on $c to frank" do
-      $c.my_name.should == "frank"
+      $c.my_name.should == "bob"
     end
     it "should set my_name on $b to bob" do
-      $b.my_name.should == "bob"
+      $b.my_name.should == "franke"
     end
     it "should not set my_name to is_frank on @a" do
-      @a.my_name.should == nil
+      @a.my_name.should == "Default"
     end
   end
   context "from within a module_eval" do
@@ -50,9 +53,7 @@ class QuickieTest < Test::Unit::TestCase
           self.class.send :attr_reader, :c
           @c = Quickie.new do
             self.class.send :attr_reader, :d
-            my_name "bob"
             $d = @d = Quickie.new do
-              my_name "frank"
             end
           end
         end
