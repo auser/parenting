@@ -19,14 +19,20 @@ module Parenting
     def depth
       @depth ||= context_stack.size - 1
     end
-    def self.new_from_string(str="")
-      a = new
-      a.parent = nil
-      a.instance_eval("def run_child(pa);context_stack.push pa;#{str};context_stack.pop;end", str)
-      eval str
-      a.run_child(a)
-      context_stack.pop      
-      a
+    def eval_from_string(str="")
+      instance_eval <<-EOM
+        def run_child(pa)
+          context_stack.push pa
+          #{str}
+          context_stack.pop
+          remove_method(:run_child)
+          self
+        end
+      EOM
+      run_child(self)
+    end
+    def this
+      self
     end
     def method_missing(m,*a,&block)
       if block

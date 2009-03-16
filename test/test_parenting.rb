@@ -7,24 +7,24 @@ class QuickieTest < Test::Unit::TestCase
   context "setting" do
     before do
       @a = Quickie.new do
-        @@b = Quickie.new do
+        $b = Quickie.new do
           my_name "bob"
-          @@c = Quickie.new do
+          $c = Quickie.new do
             my_name "frank"
           end
         end
       end
     end
     it "should set the parents properly" do
-      @@c.parent.should == @@b
-      @@b.parent.should == @a
+      $c.parent.should == $b
+      $b.parent.should == @a
       @a.parent.should == nil
     end
     it "should set my_name on @@c to frank" do
-      @@c.my_name.should == "frank"
+      $c.my_name.should == "frank"
     end
     it "should set my_name on @@b to bob" do
-      @@b.my_name.should == "bob"
+      $b.my_name.should == "bob"
     end
     it "should not set my_name to is_frank on @a" do
       @a.my_name.should == nil
@@ -32,11 +32,15 @@ class QuickieTest < Test::Unit::TestCase
   end
   context "from within a module_eval" do
     before(:all) do
-      @a = Quickie.new_from_string <<-EOE
-        b Quickie.new do
-          c Quickie.new do
+      @a = Quickie.new
+      @a.eval_from_string <<-EOE
+      self.class.send :attr_reader, :b
+        @b = Quickie.new do
+          self.class.send :attr_reader, :c
+          @c = Quickie.new do
+            self.class.send :attr_reader, :d
             my_name "bob"
-            d Quickie.new do
+            @d ||= Quickie.new do
               my_name "frank"
             end
           end
@@ -45,9 +49,9 @@ class QuickieTest < Test::Unit::TestCase
     end
     it "should set the parent's properly" do
       @a.parent.should == nil
+      @a.b.parent.should == @a
       @a.b.c.parent.should == @a.b
-      # @a.b.parent.should == @a
-      # @a.b.c.parent.should == @a.b
+      @a.b.c.d.parent.should == @a.b.c
     end
   end
 end
