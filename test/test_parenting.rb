@@ -20,6 +20,17 @@ class QuickieTest < Test::Unit::TestCase
       $b.parent.should == @a
       @a.parent.should == nil
     end
+    it "should have proper depth" do
+      @a.depth.should == 0
+      $b.depth.should == 1
+      $c.depth.should == 2
+    end
+    it "should have current_context" do
+      $context_stack.should == []
+      @a.current_context.should == []
+      $b.current_context.should ==[@a]
+      $c.current_context.should ==[@a, $b]
+    end
     it "should set my_name on $c to frank" do
       $c.my_name.should == "frank"
     end
