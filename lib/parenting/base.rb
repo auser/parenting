@@ -23,6 +23,7 @@ module Parenting
       a = new
       a.parent = nil
       a.instance_eval("def run_child(pa);context_stack.push pa;#{str};context_stack.pop;end", str)
+      eval str
       a.run_child(a)
       context_stack.pop      
       a
