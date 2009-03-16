@@ -6,11 +6,11 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ari Lerner"]
-  s.date = %q{2009-03-14}
+  s.date = %q{2009-03-16}
   s.description = %q{Being a responsible parent is hard. This lil gem makes it easy!}
   s.email = ["arilerner@mac.com"]
   s.extra_rdoc_files = ["History.txt", "Manifest.txt", "PostInstall.txt", "README.rdoc"]
-  s.files = ["History.txt", "Manifest.txt", "PostInstall.txt", "README.rdoc", "Rakefile", "lib/parenting.rb", "lib/parenting/base.rb", "script/console", "script/destroy", "script/generate", "test/test_helper.rb", "test/test_parenting.rb"]
+  s.files = ["History.txt", "Manifest.txt", "PostInstall.txt", "README.rdoc", "Rakefile", "lib/parenting.rb", "lib/parenting/base.rb", "parenting.gemspec", "script/console", "script/destroy", "script/generate", "test/test_helper.rb", "test/test_parenting.rb"]
   s.has_rdoc = true
   s.homepage = %q{Being a responsible parent is hard. This lil gem makes it easy!}
   s.post_install_message = %q{PostInstall.txt}

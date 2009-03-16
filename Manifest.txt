@@ -5,6 +5,7 @@ README.rdoc
 Rakefile
 lib/parenting.rb
 lib/parenting/base.rb
+parenting.gemspec
 script/console
 script/destroy
 script/generate
