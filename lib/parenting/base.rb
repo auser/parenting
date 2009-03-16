@@ -10,14 +10,16 @@ module Parenting
       instance_eval &block if block
       context_stack.pop
     end
+    
     def parent
       @parent ||= current_context[-1] == self ? current_context[-2] : current_context[-1]
     end
+    
     def current_context
       @current_context ||= context_stack[0..depth]
     end
     def depth
-      @depth ||= context_stack.size - 1
+      @depth ||= context_stack.size
     end
     def eval_from_string(str="")
       instance_eval <<-EOM

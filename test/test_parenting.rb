@@ -53,5 +53,11 @@ class QuickieTest < Test::Unit::TestCase
       @a.b.c.parent.should == @a.b
       @a.b.c.d.parent.should == @a.b.c
     end
+    it "should set the depth" do
+      @a.depth.should == 0
+      @a.b.depth.should == 1
+      @a.b.c.depth.should == 2
+      @a.b.c.d.depth.should == 3
+    end
   end
 end
