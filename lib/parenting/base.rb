@@ -7,11 +7,23 @@ module Parenting
     def run_in_context(&block)
       @parent = parent
 
-      context_stack.push self
-      instance_eval &block if block
-      context_stack.pop
+      begin
+        context_stack.push self
+        instance_eval &block if block
+        context_stack.pop
+        head
+      rescue
+        puts context_stack.inspect
+        raise $!
+      end      
     end
     
+    def head
+      context_stack.first
+    end
+    def context
+      context_stack.last
+    end
     def parent
       @parent ||= current_context[-1] == self ? current_context[-2] : current_context[-1]
     end
@@ -26,15 +38,22 @@ module Parenting
       instance_eval <<-EOM
         def run_child(pa)
           context_stack.push pa
+          this.instance_eval <<-EOE
           #{str}
+          EOE
           context_stack.pop
           self
         end
       EOM
       run_child(self)
     end
+    def eval_from_file(filename=nil)
+      File.open(filename, 'r') do |f|
+        eval f.read, binding, __FILE__, __LINE__
+      end
+    end
     def this
-      self
+      @this ||= self
     end
     def method_missing(m,*a,&block)
       if block
