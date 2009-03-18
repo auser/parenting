@@ -7,15 +7,10 @@ module Parenting
     def run_in_context(&block)
       @parent = parent
 
-      begin
-        context_stack.push self
-        instance_eval &block if block
-        context_stack.pop
-        head
-      rescue
-        puts context_stack.inspect
-        raise $!
-      end      
+      context_stack.push self
+      instance_eval &block if block
+      context_stack.pop
+      head   
     end
     
     def head
