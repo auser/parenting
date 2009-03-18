@@ -1,6 +1,11 @@
 module Parenting
-  class Base
-    
+  module ClassMethods
+    def default_options(hsh={})
+      @default_dsl_options ||= hsh
+    end
+  end
+  
+  module InstanceMethods
     def context_stack
       $context_stack ||= []
     end
@@ -12,7 +17,7 @@ module Parenting
       context_stack.pop
       head   
     end
-    
+
     def head
       context_stack.first
     end
@@ -22,7 +27,7 @@ module Parenting
     def parent
       @parent ||= current_context[-1] == self ? current_context[-2] : current_context[-1]
     end
-    
+
     def current_context
       @current_context ||= context_stack[0..depth]
     end
@@ -65,5 +70,9 @@ module Parenting
         super
       end
     end
+  end
+  def self.included(receiver)
+    receiver.extend         ClassMethods
+    receiver.send :include, InstanceMethods
   end
 end

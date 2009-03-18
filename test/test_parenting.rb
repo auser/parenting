@@ -1,6 +1,7 @@
 require File.dirname(__FILE__) + '/test_helper.rb'
 
-class Quickie < Parenting::Base
+class Quickie
+  include Parenting
   attr_accessor :my_name
   def initialize(nm="Default", &block)
     @my_name ||= nm
