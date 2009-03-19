@@ -83,12 +83,6 @@ class QuickieTest < Test::Unit::TestCase
       $d.parent.should == @a.b.c
       $d.parent.parent.parent.should == @a
     end
-    it "should have the latest context set as the last item in the stack" do
-      @a.b.c.this_context.nil?.should == false
-      @a.b.this_context.should == @a.b
-      @a.b.c.this_context.should == @a.b.c
-      @a.b.c.d.this_context.should == @a.b.c.d
-    end
   end
   context "for a file" do
     before do
@@ -116,12 +110,6 @@ class QuickieTest < Test::Unit::TestCase
       $d.should == @apple.b.c.d
       $d.parent.should == @apple.b.c
       $d.parent.parent.parent.should == @apple
-    end
-    it "should have the latest context set as the last item in the stack" do
-      @apple.b.c.this_context.nil?.should == false
-      @apple.b.this_context.should == @apple.b
-      @apple.b.c.this_context.should == @apple.b.c
-      @apple.b.c.d.this_context.should == @apple.b.c.d
     end
   end
 end

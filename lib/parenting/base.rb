@@ -26,6 +26,7 @@ module Parenting
       context_stack.first
     end
     def this_context
+      # @this_context ||= context_stack.last
       context_stack.last
     end
     def parent
