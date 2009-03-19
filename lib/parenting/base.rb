@@ -54,12 +54,12 @@ module Parenting
     def this
       @this ||= self
     end
-    def method_missing(m,*a,&block)
+    def method_missing(m,*args,&block)
       if block
         if args.empty?
           super
         else          
-          inst = a[0]
+          inst = args[0]
           context_stack.push self
           inst.instance_eval(&block)
           context_stack.pop
