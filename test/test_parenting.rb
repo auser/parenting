@@ -83,5 +83,11 @@ class QuickieTest < Test::Unit::TestCase
       $d.parent.should == @a.b.c
       $d.parent.parent.parent.should == @a
     end
+    it "should have the latest context set as the last item in the stack" do
+      @a.b.c.this_context.nil?.should == false
+      @a.b.this_context.should == @a.b
+      @a.b.c.this_context.should == @a.b.c
+      @a.b.c.d.this_context.should == @a.b.c.d
+    end
   end
 end

@@ -13,7 +13,7 @@ module Parenting
       @parent = parent
 
       context_stack.push self
-      instance_eval &block if block
+      this_context.instance_eval &block if block
       context_stack.pop
       head   
     end
@@ -21,8 +21,8 @@ module Parenting
     def head
       context_stack.first
     end
-    def context
-      context_stack.last
+    def this_context
+      @this_context ||= context_stack.last
     end
     def parent
       @parent ||= current_context[-1] == self ? current_context[-2] : current_context[-1]
