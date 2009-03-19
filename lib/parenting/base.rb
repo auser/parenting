@@ -1,7 +1,11 @@
 module Parenting
   module ClassMethods
-    def default_options(hsh={})
-      @default_dsl_options ||= hsh
+    def eval_from_file(filename=nil)
+      a = new
+      File.open(filename, 'r') do |f|
+        a.eval_from_string f.read
+      end
+      a
     end
   end
   
@@ -47,11 +51,6 @@ module Parenting
       EOM
       run_child(self)
     end
-    def eval_from_file(filename=nil)
-      File.open(filename, 'r') do |f|
-        eval f.read, binding, __FILE__, __LINE__
-      end
-    end
     def this
       @this ||= self
     end
@@ -64,7 +63,6 @@ module Parenting
           context_stack.push self
           inst.instance_eval(&block)
           context_stack.pop
-          h[m] = inst          
         end
       else
         super

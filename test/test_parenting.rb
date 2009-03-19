@@ -90,4 +90,38 @@ class QuickieTest < Test::Unit::TestCase
       @a.b.c.d.this_context.should == @a.b.c.d
     end
   end
+  context "for a file" do
+    before do
+      @apple = Quickie.eval_from_file "file_to_eval.rb"
+    end
+    it "should set the parent's properly" do
+      @apple.parent.should == nil
+      @apple.b.parent.should == @apple
+      @apple.b.c.parent.should == @apple.b
+      @apple.b.c.d.parent.should == @apple.b.c
+    end
+    it "should set the depth" do
+      @apple.depth.should == 0
+      @apple.b.depth.should == 1
+      @apple.b.c.depth.should == 2
+      @apple.b.c.d.depth.should == 3
+    end
+    it "should have a current context" do
+      @apple.context_stack.size.should == 0
+      @apple.b.current_context.should == [@apple]
+      @apple.b.c.current_context.should == [@apple,@apple.b]
+      @apple.b.c.d.current_context.should == [@apple, @apple.b, @apple.b.c]
+    end
+    it "should no be weird" do
+      $d.should == @apple.b.c.d
+      $d.parent.should == @apple.b.c
+      $d.parent.parent.parent.should == @apple
+    end
+    it "should have the latest context set as the last item in the stack" do
+      @apple.b.c.this_context.nil?.should == false
+      @apple.b.this_context.should == @apple.b
+      @apple.b.c.this_context.should == @apple.b.c
+      @apple.b.c.d.this_context.should == @apple.b.c.d
+    end
+  end
 end
