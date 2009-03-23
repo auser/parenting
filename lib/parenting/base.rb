@@ -1,12 +1,5 @@
 module Parenting
   module ClassMethods
-    def eval_from_file(filename=nil)
-      a = new
-      File.open(filename, 'r') do |f|
-        a.eval_from_string f.read
-      end
-      a
-    end
   end
   
   module InstanceMethods
@@ -38,19 +31,6 @@ module Parenting
     end
     def depth
       @depth ||= context_stack.size
-    end
-    def eval_from_string(str="")
-      instance_eval <<-EOM
-        def run_child(pa)
-          context_stack.push pa
-          this.instance_eval <<-EOE
-          #{str}
-          EOE
-          context_stack.pop
-          self
-        end
-      EOM
-      run_child(self)
     end
     def this
       @this ||= self

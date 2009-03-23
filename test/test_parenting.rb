@@ -47,14 +47,15 @@ class QuickieTest < Test::Unit::TestCase
   end
   context "from within a module_eval" do
     before(:all) do
-      @a = Quickie.new
-      @a.eval_from_string <<-EOE
-      self.class.send :attr_reader, :b
-        @b = Quickie.new do
-          self.class.send :attr_reader, :c
-          @c = Quickie.new do
-            self.class.send :attr_reader, :d
-            $d = @d = Quickie.new do
+      instance_eval <<-EOE
+        @a = Quickie.new do
+          self.class.send :attr_reader, :b
+          @b = Quickie.new do
+            self.class.send :attr_reader, :c
+            @c = Quickie.new do
+              self.class.send :attr_reader, :d
+              $d = @d = Quickie.new do
+              end
             end
           end
         end
@@ -84,32 +85,5 @@ class QuickieTest < Test::Unit::TestCase
       $d.parent.parent.parent.should == @a
     end
   end
-  context "for a file" do
-    before do
-      @apple = Quickie.eval_from_file "file_to_eval.rb"
-    end
-    it "should set the parent's properly" do
-      @apple.parent.should == nil
-      @apple.b.parent.should == @apple
-      @apple.b.c.parent.should == @apple.b
-      @apple.b.c.d.parent.should == @apple.b.c
-    end
-    it "should set the depth" do
-      @apple.depth.should == 0
-      @apple.b.depth.should == 1
-      @apple.b.c.depth.should == 2
-      @apple.b.c.d.depth.should == 3
-    end
-    it "should have a current context" do
-      @apple.context_stack.size.should == 0
-      @apple.b.current_context.should == [@apple]
-      @apple.b.c.current_context.should == [@apple,@apple.b]
-      @apple.b.c.d.current_context.should == [@apple, @apple.b, @apple.b.c]
-    end
-    it "should no be weird" do
-      $d.should == @apple.b.c.d
-      $d.parent.should == @apple.b.c
-      $d.parent.parent.parent.should == @apple
-    end
-  end
+
 end
