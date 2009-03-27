@@ -46,7 +46,11 @@ module Parenting
           context_stack.pop
         end
       else
-        super
+        if parent && parent != self
+          parent.send(m,*args,&block) rescue super
+        else
+          super
+        end
       end
     end
   end
