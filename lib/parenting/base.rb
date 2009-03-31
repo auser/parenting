@@ -47,7 +47,11 @@ module Parenting
         end
       else
         if parent && parent != self
-          parent.send(m,*args,&block) rescue super
+          begin
+            parent.send(m,*args,&block)
+          rescue NoMethodError => e
+            super   
+          end
         else
           super
         end
