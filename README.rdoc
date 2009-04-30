@@ -1,10 +1,10 @@
-= parenting
+= Parenting
 
-Being a responsible parent is hard. This lil gem makes it easy!
+http://poolpartyrb.com
 
 == DESCRIPTION:
 
-Being a responsible parent is hard. This lil gem makes it easy!
+Easily add parents to classes
 
 == SYNOPSIS:
 
