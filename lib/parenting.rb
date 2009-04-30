@@ -2,7 +2,7 @@ $:.unshift(File.dirname(__FILE__)) unless
   $:.include?(File.dirname(__FILE__)) || $:.include?(File.expand_path(File.dirname(__FILE__)))
 
 module Parenting
-  VERSION = '0.0.2' unless const_defined?(:VERSION)
+  VERSION = '0.0.3' unless const_defined?(:VERSION)
 end
 
 Dir["parenting/core/*.rb"].each {|lib| require lib }
