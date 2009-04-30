@@ -7,4 +7,4 @@ end
 
 Dir["parenting/core/*.rb"].each {|lib| require lib }
 
-require "parenting/base"
+require "parenting/parenting"
