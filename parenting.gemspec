@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{parenting}
-  s.version = "0.0.3"
+  s.version = "0.0.4"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ari Lerner"]
@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.description = %q{Easily add parents to classes}
   s.email = ["arilerner@mac.com"]
   s.extra_rdoc_files = ["History.txt", "Manifest.txt", "PostInstall.txt", "README.rdoc"]
-  s.files = ["History.txt", "Manifest.txt", "PostInstall.txt", "README.rdoc", "Rakefile", "lib/parenting.rb", "lib/parenting/base.rb", "parenting.gemspec", "script/console", "script/destroy", "script/generate", "test/test_helper.rb", "test/test_parenting.rb"]
+  s.files = ["History.txt", "Manifest.txt", "PostInstall.txt", "README.rdoc", "Rakefile", "lib/parenting.rb", "lib/parenting/parenting.rb", "parenting.gemspec", "script/console", "script/destroy", "script/generate", "test/file_to_eval.rb", "test/test_helper.rb", "test/test_parenting.rb"]
   s.has_rdoc = true
   s.homepage = %q{http://poolpartyrb.com}
   s.post_install_message = %q{PostInstall.txt}
