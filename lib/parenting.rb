@@ -5,6 +5,6 @@ module Parenting
   VERSION = '0.0.3' unless const_defined?(:VERSION)
 end
 
-Dir["parenting/core/*.rb"].each {|lib| require lib }
+# Dir["parenting/core/*.rb"].each {|lib| require lib }
 
 require "parenting/parenting"
