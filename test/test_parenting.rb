@@ -20,29 +20,29 @@ class QuickieTest < Test::Unit::TestCase
       end
     end
     it "should set the parents properly" do
-      $c.parent.should == $b
-      $b.parent.should == @a
-      @a.parent.should == nil
+      assert_equal $c.parent, $b
+      assert_equal $b.parent, @a
+      assert_equal @a.parent, nil
     end
     it "should have proper depth" do
-      @a.depth.should == 0
-      $b.depth.should == 1
-      $c.depth.should == 2
+      assert_equal @a.depth, 0
+      assert_equal $b.depth, 1
+      assert_equal $c.depth, 2
     end
     it "should have current_context" do
-      $context_stack.should == []
-      @a.current_context.should == []
-      $b.current_context.should ==[@a]
-      $c.current_context.should ==[@a, $b]
+      assert_equal $context_stack, []
+      assert_equal @a.current_context, []
+      assert_equal $b.current_context,[@a]
+      assert_equal $c.current_context,[@a, $b]
     end
     it "should set my_name on $c to frank" do
-      $c.my_name.should == "bob"
+      assert_equal $c.my_name, "bob"
     end
     it "should set my_name on $b to bob" do
-      $b.my_name.should == "franke"
+      assert_equal $b.my_name, "franke"
     end
     it "should not set my_name to is_frank on @a" do
-      @a.my_name.should == "Default"
+      assert_equal @a.my_name, "Default"
     end
   end
   context "from within a module_eval" do
@@ -62,28 +62,56 @@ class QuickieTest < Test::Unit::TestCase
       EOE
     end
     it "should set the parent's properly" do
-      @a.parent.should == nil
-      @a.b.parent.should == @a
-      @a.b.c.parent.should == @a.b
-      @a.b.c.d.parent.should == @a.b.c
+      assert_equal @a.parent, nil
+      assert_equal @a.b.parent, @a
+      assert_equal @a.b.c.parent, @a.b
+      assert_equal @a.b.c.d.parent, @a.b.c
     end
     it "should set the depth" do
-      @a.depth.should == 0
-      @a.b.depth.should == 1
-      @a.b.c.depth.should == 2
-      @a.b.c.d.depth.should == 3
+      assert_equal @a.depth, 0
+      assert_equal @a.b.depth, 1
+      assert_equal @a.b.c.depth, 2
+      assert_equal @a.b.c.d.depth, 3
     end
     it "should have a current context" do
-      @a.context_stack.size.should == 0
-      @a.b.current_context.should == [@a]
-      @a.b.c.current_context.should == [@a,@a.b]
-      @a.b.c.d.current_context.should == [@a, @a.b, @a.b.c]
+      assert_equal @a.context_stack.size, 0
+      assert_equal @a.b.current_context, [@a]
+      assert_equal @a.b.c.current_context, [@a,@a.b]
+      assert_equal @a.b.c.d.current_context, [@a, @a.b, @a.b.c]
     end
     it "should no be weird" do
-      $d.should == @a.b.c.d
-      $d.parent.should == @a.b.c
-      $d.parent.parent.parent.should == @a
+      assert_equal $d, @a.b.c.d
+      assert_equal $d.parent, @a.b.c
+      assert_equal $d.parent.parent.parent, @a
     end
   end
+  context "calling a method on parent that doesn't exist on self" do
+    setup do
+      class Tiny
+        include Parenting
+        attr_reader :message
+        def initialize(&block)
+          run_in_context(&block) if block
+        end
+      end
+      instance_eval <<-EOE
+        @a = Quickie.new :outside do
+          self.class.send :attr_reader, :b          
+          @b = Tiny.new do
+            @message = my_name
+          end
+        end
+      EOE
+    end
+
+    should "setup the parents properly" do
+      assert_equal @a.parent, nil
+      assert_equal @a.b.parent, @a
+    end
+    should "call my_name on the parent" do
+      assert_equal @a.b.message, :outside
+    end
+  end
+  
 
 end

@@ -10,7 +10,7 @@ module Parenting
       @parent = parent
 
       context_stack.push self
-      this_context.instance_eval &block if block
+      this_context.instance_eval(&block) if block
       context_stack.pop
       head   
     end
@@ -46,12 +46,8 @@ module Parenting
           context_stack.pop
         end
       else
-        if parent && parent != self
-          begin
-            parent.send(m,*args,&block)
-          rescue NoMethodError => e
-            super   
-          end
+        if respond_to?(:parent) && parent != self && parent.respond_to?(m)
+          parent.send(m,*args,&block)
         else
           super
         end
