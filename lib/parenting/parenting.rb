@@ -35,7 +35,7 @@ module Parenting
     def this
       @this ||= self
     end
-    def method_missing(m,*args,&block)
+    def method_missing(m,*args,&block)      
       if block
         if args.empty?
           super
@@ -46,11 +46,7 @@ module Parenting
           context_stack.pop
         end
       else
-        if respond_to?(:parent) && parent != self && parent.respond_to?(m)
-          parent.send(m,*args,&block)
-        else
-          super
-        end
+        super
       end
     end
   end
