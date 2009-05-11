@@ -6,11 +6,18 @@ module Parenting
     def context_stack
       $context_stack ||= []
     end
+    def initialize(o, &block)
+      run_in_context do
+        instance_eval(&block) if block
+        super(&block)
+      end
+    end
+    
     def run_in_context(&block)
       @parent = parent
 
       context_stack.push self
-      this_context.instance_eval(&block) if block
+      instance_eval(&block) if block
       context_stack.pop
       head   
     end
@@ -46,7 +53,13 @@ module Parenting
           context_stack.pop
         end
       else
-        super
+        # if this_context.respond_to?(m)
+        #   this_context.send(m,*args,&block)
+        if parent.respond_to?(m)
+          parent.send(m,*args,&block)
+        else          
+          super
+        end
       end
     end
   end
